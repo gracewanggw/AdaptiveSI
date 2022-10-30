@@ -76,7 +76,7 @@ def update():
                     g.remove_edge(a,b)
                     # infected rewire to infected, susceptible rewire to susceptible
                     c = choice(list(g.nodes))
-                    while c == a or c == b or g.has_edge(a,c) or g.has_edge(b,c):
+                    while g.has_edge(a,c) or g.has_edge(b,c):
                         c = choice(list(g.nodes))
                     if g.nodes[c]['state'] == 0: # if c is susceptible
                         g.add_edge(b,c)
@@ -93,7 +93,7 @@ def update():
                     g.remove_edge(a,b)
                     # infected rewire to infected, susceptible rewire to susceptible
                     c = choice(list(g.nodes))
-                    while c == a or c == b or g.has_edge(a,c) or g.has_edge(b,c):
+                    while g.has_edge(a,c) or g.has_edge(b,c):
                         c = choice(list(g.nodes))
                     if g.nodes[c]['state'] == 0: # if c is susceptible
                         g.add_edge(a,c)
