@@ -54,17 +54,6 @@ def update():
     global ii_pairs
     ticks += 1
     global g
-    a = choice(list(g.nodes))
-    """if g.nodes[a]['state'] == 0: # if susceptible
-        if g.degree(a) > 0:
-            b = choice(list(g.neighbors(a)))
-            if g.nodes[b]['state'] == 1: # if neighbor b is infected
-                if random() < p_s:
-                    g.remove_edge(a, b)
-                else:
-                    g.nodes[a]['state'] = 1 if random() < p_i else 0
-    else: # if infected
-        g.nodes[a]['state'] = 0 if random() < p_r else 1"""
     
     if g.nodes[a]['state'] == 1: # if a infected
         if g.degree(a) > 0:
@@ -76,7 +65,7 @@ def update():
                     g.remove_edge(a,b)
                     # infected rewire to infected, susceptible rewire to susceptible
                     c = choice(list(g.nodes))
-                    while c == a or c == b or g.has_edge(a,c) or g.has_edge(b,c):
+                    while c == a or c == b:
                         c = choice(list(g.nodes))
                     if g.nodes[c]['state'] == 0: # if c is susceptible
                         g.add_edge(b,c)
@@ -93,7 +82,7 @@ def update():
                     g.remove_edge(a,b)
                     # infected rewire to infected, susceptible rewire to susceptible
                     c = choice(list(g.nodes))
-                    while c == a or c == b or g.has_edge(a,c) or g.has_edge(b,c):
+                    while c == a or c == b:
                         c = choice(list(g.nodes))
                     if g.nodes[c]['state'] == 0: # if c is susceptible
                         g.add_edge(a,c)
