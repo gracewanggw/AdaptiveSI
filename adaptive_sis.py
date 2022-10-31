@@ -23,7 +23,7 @@ def observe():
             node_color = [g.nodes[i]['state']*1 for i in g.nodes],
             pos = g.pos)
 
-alpha = 0.7 # severance probability
+alpha = 0.75 # severance probability
 p_i = 1 - alpha # infection probability
 # p_r = 0.1 # recovery probability
 
@@ -76,8 +76,6 @@ def update():
                     g.remove_edge(a,b)
                     # infected rewire to infected, susceptible rewire to susceptible
                     c = choice(list(g.nodes))
-                    while c == a or c == b or g.has_edge(a,c) or g.has_edge(b,c):
-                        c = choice(list(g.nodes))
                     if g.nodes[c]['state'] == 0: # if c is susceptible
                         g.add_edge(b,c)
                     else:
@@ -93,8 +91,6 @@ def update():
                     g.remove_edge(a,b)
                     # infected rewire to infected, susceptible rewire to susceptible
                     c = choice(list(g.nodes))
-                    while c == a or c == b or g.has_edge(a,c) or g.has_edge(b,c):
-                        c = choice(list(g.nodes))
                     if g.nodes[c]['state'] == 0: # if c is susceptible
                         g.add_edge(a,c)
                     else:
