@@ -24,7 +24,7 @@ def observe():
             node_color = [g.nodes[i]['state']*1 for i in g.nodes],
             pos = g.pos)
 
-alpha = 0.95 # severance probability
+alpha = 0.85 # severance probability
 p_i = 1 - alpha # infection probability
 # p_r = 0.1 # recovery probability
 
@@ -129,7 +129,7 @@ def update():
     data = [ticks, len(infected), len(susceptible), len(is_pairs)/2, len(ss_pairs)/2, len(ii_pairs)/2]
     writer.writerow(data)
 
-    if len(list(nx.connected_components(g))) > 1 or len(infected) == 0 or len(susceptible) == 0:
+    if len(is_pairs) == 0 or len(infected) == 0 or len(susceptible) == 0:
         pycxsimulator.GUI().quitGUI()
     
 
