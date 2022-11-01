@@ -24,7 +24,7 @@ def observe():
             node_color = [g.nodes[i]['state']*1 for i in g.nodes],
             pos = g.pos)
 
-alpha = 0.65 # severance probability
+alpha = 0.50 # severance probability
 p_i = 1 - alpha # infection probability
 # p_r = 0.1 # recovery probability
 
