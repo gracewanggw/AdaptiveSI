@@ -242,7 +242,8 @@ class GUI:
             self.setStatusStr("Step "+str(self.currentStep))
             self.status.configure(foreground='black')
             if (self.currentStep) % self.stepSize == 0:
-                self.drawModel()
+                #self.drawModel()
+                None
             self.rootWindow.after(int(self.timeInterval*1.0/self.stepSize),self.stepModel)
 
     def stepOnce(self):
@@ -251,7 +252,7 @@ class GUI:
         self.modelStepFunc()
         self.currentStep += 1
         self.setStatusStr("Step "+str(self.currentStep))
-        self.drawModel()
+        #self.drawModel()
         if len(self.parameterSetters) > 0:
             self.buttonSaveParameters.configure(state=NORMAL)
 
@@ -285,7 +286,7 @@ class GUI:
                 self.textInformation.config(state=DISABLED)
                 
             self.modelInitFunc()
-            self.drawModel()     
+            #self.drawModel()     
         self.rootWindow.mainloop()
 
     def quitGUI(self):
