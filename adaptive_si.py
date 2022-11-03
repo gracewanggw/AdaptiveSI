@@ -8,7 +8,10 @@ import csv
 def initialize():
     global g
     #g = nx.karate_club_graph()
-    g = nx.barabasi_albert_graph(20, 5)
+    #g = nx.barabasi_albert_graph(20, 5) 
+    # Use seed for reproducibility
+    g = nx.gnm_random_graph(300, 1500, 20160)
+    # try diff networks
     #g.pos = nx.spring_layout(g)
     g.pos = nx.circular_layout(g)
     for i in g.nodes:
@@ -23,7 +26,7 @@ def observe():
             node_color = [g.nodes[i]['state']*1 for i in g.nodes],
             pos = g.pos)
 
-alpha = 0.75 # severance probability
+alpha = 0.95 # severance probability
 p_i = 1 - alpha # infection probability
 # p_r = 0.1 # recovery probability
 
@@ -54,7 +57,35 @@ def update():
     global ii_pairs
     ticks += 1
     global g
+
+    infected = []
+    susceptible = []
+    is_pairs = []
+    ss_pairs = []
+    ii_pairs = []
+    for n in g.nodes:
+        sus = False
+        if g.nodes[n]['state'] == 0:
+            sus = True
+            susceptible.append(n)
+        else:
+            infected.append(n)
+        for m in g.neighbors(n):
+            if g.nodes[m]['state'] == 0:
+                if sus:
+                    ss_pairs.append(tuple([n,m]))
+                else:
+                    is_pairs.append(tuple([n,m]))
+            else:
+                if sus:
+                    is_pairs.append(tuple([n,m]))
+                else:
+                    ii_pairs.append(tuple([n,m]))
+    data = [ticks, len(infected), len(susceptible), len(is_pairs)/2, len(ss_pairs)/2, len(ii_pairs)/2]
+    writer.writerow(data)
+    
     a = choice(list(g.nodes))
+
     """if g.nodes[a]['state'] == 0: # if susceptible
         if g.degree(a) > 0:
             b = choice(list(g.neighbors(a)))
@@ -96,34 +127,7 @@ def update():
                     else:
                         g.add_edge(b,c)
 
-
-    infected = []
-    susceptible = []
-    is_pairs = []
-    ss_pairs = []
-    ii_pairs = []
-    for n in g.nodes:
-        sus = False
-        if g.nodes[n]['state'] == 0:
-            sus = True
-            susceptible.append(n)
-        else:
-            infected.append(n)
-        for m in g.neighbors(n):
-            if g.nodes[m]['state'] == 0:
-                if sus:
-                    ss_pairs.append(tuple([n,m]))
-                else:
-                    is_pairs.append(tuple([n,m]))
-            else:
-                if sus:
-                    is_pairs.append(tuple([n,m]))
-                else:
-                    ii_pairs.append(tuple([n,m]))
-    data = [ticks, len(infected), len(susceptible), len(is_pairs)/2, len(ss_pairs)/2, len(ii_pairs)/2]
-    writer.writerow(data)
-
-    if len(list(nx.connected_components(g))) > 1 or len(infected) == 0 or len(susceptible) == 0:
+    if len(is_pairs) == 0 or len(infected) == 0 or len(susceptible) == 0:
         pycxsimulator.GUI().quitGUI()
     
 
