@@ -57,6 +57,33 @@ def update():
     global ii_pairs
     ticks += 1
     global g
+
+    infected = []
+    susceptible = []
+    is_pairs = []
+    ss_pairs = []
+    ii_pairs = []
+    for n in g.nodes:
+        sus = False
+        if g.nodes[n]['state'] == 0:
+            sus = True
+            susceptible.append(n)
+        else:
+            infected.append(n)
+        for m in g.neighbors(n):
+            if g.nodes[m]['state'] == 0:
+                if sus:
+                    ss_pairs.append(tuple([n,m]))
+                else:
+                    is_pairs.append(tuple([n,m]))
+            else:
+                if sus:
+                    is_pairs.append(tuple([n,m]))
+                else:
+                    ii_pairs.append(tuple([n,m]))
+    data = [ticks, len(infected), len(susceptible), len(is_pairs)/2, len(ss_pairs)/2, len(ii_pairs)/2]
+    writer.writerow(data)
+    
     a = choice(list(g.nodes))
 
     """if g.nodes[a]['state'] == 0: # if susceptible
@@ -103,33 +130,6 @@ def update():
                         g.add_edge(a,c)
                     else:
                         g.add_edge(b,c)
-
-
-    infected = []
-    susceptible = []
-    is_pairs = []
-    ss_pairs = []
-    ii_pairs = []
-    for n in g.nodes:
-        sus = False
-        if g.nodes[n]['state'] == 0:
-            sus = True
-            susceptible.append(n)
-        else:
-            infected.append(n)
-        for m in g.neighbors(n):
-            if g.nodes[m]['state'] == 0:
-                if sus:
-                    ss_pairs.append(tuple([n,m]))
-                else:
-                    is_pairs.append(tuple([n,m]))
-            else:
-                if sus:
-                    is_pairs.append(tuple([n,m]))
-                else:
-                    ii_pairs.append(tuple([n,m]))
-    data = [ticks, len(infected), len(susceptible), len(is_pairs)/2, len(ss_pairs)/2, len(ii_pairs)/2]
-    writer.writerow(data)
 
     if len(is_pairs) == 0 or len(infected) == 0 or len(susceptible) == 0:
         pycxsimulator.GUI().quitGUI()
