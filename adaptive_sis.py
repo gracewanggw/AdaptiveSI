@@ -8,7 +8,9 @@ import csv
 def initialize():
     global g
     #g = nx.karate_club_graph()
-    g = nx.barabasi_albert_graph(20, 5) 
+    #g = nx.barabasi_albert_graph(20, 5) 
+    # Use seed for reproducibility
+    g = nx.gnm_random_graph(300, 1500, 20160)
     # try diff networks
     #g.pos = nx.spring_layout(g)
     g.pos = nx.circular_layout(g)
@@ -24,7 +26,7 @@ def observe():
             node_color = [g.nodes[i]['state']*1 for i in g.nodes],
             pos = g.pos)
 
-alpha = 0.87 # severance probability
+alpha = 0.95 # severance probability
 p_i = 1 - alpha # infection probability
 # p_r = 0.1 # recovery probability
 
