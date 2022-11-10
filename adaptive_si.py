@@ -15,7 +15,7 @@ def initialize():
     #g.pos = nx.spring_layout(g)
     g.pos = nx.circular_layout(g)
     for i in g.nodes:
-        g.nodes[i]['state'] = 1 if random() < .5 else 0
+        g.nodes[i]['state'] = 1 if random() < .3 else 0
     
     print("num edges before", g.number_of_edges())
     
